@@ -12,5 +12,21 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  return view('welcome');
 });
+
+Route::resource('organizations', 'OrganizationController', ['except' => [
+    'index'
+  ]]);
+
+Route::resource('organizations.users', 'UserController');
+
+Route::resource('organizations.sponsors', 'SponsorController');
+
+Route::resource('organizations.sponsors.donations', 'SponsorDonationController');
+
+Route::resource('organizations.sponsors.contacts', 'SponsorContactController');
+
+Route::resource('organizations.sponsors.correspondents', 'SponsorCorrespondentController');
+
+Route::resource('organizations.sponsors.presentations', 'SponsorPresentationController');
