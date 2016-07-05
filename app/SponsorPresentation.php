@@ -11,4 +11,9 @@ class SponsorPresentation extends Model
     {
       return $this->belongsTo(Sponsor::class);
     }
+
+    public function user()
+    {
+      return $this->belongsToMany(User::class);
+    }
 }

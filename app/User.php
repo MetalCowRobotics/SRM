@@ -32,4 +32,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Sponsor::class);
     }
+    public function sponsorPresentation()
+    {
+      return $this->belongsToMany(SponsorPresentation::class);
+    }
 }

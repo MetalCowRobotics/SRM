@@ -19,7 +19,9 @@ class CreateSponsorsTable extends Migration
             $table->integer("zipcode");
             $table->string("state");
             $table->string("city");
-            $table->string("address");
+            $table->string("address_1");
+            $table->string("address_2")->nullable();
+            $table->string("address_type")->nullable();
             $table->date("join_date");
             $table->timestamps();
         });

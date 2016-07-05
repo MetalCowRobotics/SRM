@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\SponsorPresentation;
+
 class SponsorPresentationController extends Controller
 {
     /**
@@ -13,8 +15,15 @@ class SponsorPresentationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($organization_id, $sponsor_id)
     {
+      $sponsor_presentations = SponsorPresentation::where('sponsor_id', $sponsor_id)
+        ->get();
+      return view ('sponsor_presentations.index', [
+        'sponsor_presentations'=>$sponsor_presentations,
+        'sponsor_id'=>$sponsor_id,
+        'organization_id'=>$organization_id
+      ]);
         //
     }
 
@@ -23,8 +32,12 @@ class SponsorPresentationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($organization_id, $sponsor_id)
     {
+      return view('sponsor_presentations.create', [
+        'sponsor_id'=>$sponsor_id,
+        'organization_id'=>$organization_id
+      ]);
         //
     }
 
@@ -34,8 +47,12 @@ class SponsorPresentationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($organization_id, $sponsor_id, Request $request)
     {
+      $this->validate($request, [
+        'item_type' => 'required',
+        'monetary_value' => 'required'
+      ]);
         //
     }
 

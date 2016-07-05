@@ -53,7 +53,7 @@ class OrganizationController extends Controller
     $organization->verification_num = $request->verification_num;
     $organization->save();
 
-    return redirect('/organization/create');
+    return redirect('/organizations/create');
         //
     }
 
