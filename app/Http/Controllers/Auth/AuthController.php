@@ -7,12 +7,13 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Socialite;
 
 class AuthController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Registration & Login Controller
+    | :Registration & Login Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users, as well as the
@@ -39,6 +40,16 @@ class AuthController extends Controller
     {
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
+    public function redirectToProvider()
+    {   
+        return Socialite::with('slack')->redirect();
+    }
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('slack')->user();
+        $accessTokenResponseBody = $user->accessTokenResponseBody;
+        return redirect('/');
+    } 
 
     /**
      * Get a validator for an incoming registration request.

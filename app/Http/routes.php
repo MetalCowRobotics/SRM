@@ -33,4 +33,8 @@ Route::resource('organizations.sponsors.presentations', 'SponsorPresentationCont
 
 Route::auth();
 
+Route::get('login/slack', 'Auth\AuthController@handleProviderCallback');
+
+Route::get('login/slack-redir', 'Auth\AuthController@redirectToProvider');
+
 Route::get('/home', 'HomeController@index');
