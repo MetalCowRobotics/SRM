@@ -30,3 +30,7 @@ Route::resource('organizations.sponsors.contacts', 'SponsorContactController');
 Route::resource('organizations.sponsors.correspondents', 'SponsorCorrespondentController');
 
 Route::resource('organizations.sponsors.presentations', 'SponsorPresentationController');
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
