@@ -39,11 +39,12 @@ class AuthController extends Controller
         ]);
 */
         $userModel = User::create([
-            'name' => $user->name,
-            'organization_id' => $user->organization_id,
-            'email' => $user->email,
-            'avatar' => $user->avatar,
-            'id' => $user->id,
+            'name'=>$user->name,
+            'email'=>$user->email,
+            'avatar'=>$user->avatar,
+            'id'=> $user->id,
+            'organization_id'=>$user->organization_id,
+            'password'=>'thisneedstoexist',
         ]);
         Log::info("User id : ".$user->id);
         Log::info("Org id : ".$user->organization_id);
@@ -54,15 +55,19 @@ class AuthController extends Controller
             'id'=> $user->id,
             'organization_id'=>$user->organization_id,
             'password'=>'thisneedstoexist',
-        ],true,true))
+        ],true,true))*/
+        if(Auth::login($userModel, true))
         {
             Log::info("worked");
         }else{
             Log::info("did not work");
-        }*/
-        Auth::onceBasic($user->email);
-
-
+        }
+        if(Auth::loginUsingId($user->id,true))
+        {
+            Log::info("worked -- 2");
+        }else{
+            Log::info("did not work -- 2");
+        }
         return redirect('/');
     
     } 
