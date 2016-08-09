@@ -5,41 +5,23 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Socialite;
+use Auth;
+use Log;
 
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | :Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
-    /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
 
     /**
      * Create a new authentication controller instance.
      *
      * @return void
      */
-    public function __construct()
+ /*   public function __construct()
     {
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
-    }
+    }*/
+
     public function redirectToProvider()
     {   
         return Socialite::with('slack')->redirect();
@@ -47,31 +29,45 @@ class AuthController extends Controller
     public function handleProviderCallback()
     {
         $user = Socialite::driver('slack')->user();
+        
         $accessTokenResponseBody = $user->accessTokenResponseBody;
-        return redirect('/');
-    } 
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
+/*
+        $validate = Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
-    }
+*/
+        $userModel = User::create([
+            'name' => $user->name,
+            'organization_id' => $user->organization_id,
+            'email' => $user->email,
+            'avatar' => $user->avatar,
+            'id' => $user->id,
+        ]);
+        Log::info("User id : ".$user->id);
+        Log::info("Org id : ".$user->organization_id);
+        /*if(Auth::attempt([
+            'name'=>$user->name,
+            'email'=>$user->email,
+            'avatar'=>$user->avatar,
+            'id'=> $user->id,
+            'organization_id'=>$user->organization_id,
+            'password'=>'thisneedstoexist',
+        ],true,true))
+        {
+            Log::info("worked");
+        }else{
+            Log::info("did not work");
+        }*/
+        Auth::onceBasic($user->email);
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
+
+        return redirect('/');
+    
+    } 
+
+/*
     protected function create(array $data)
     {
         return User::create([
@@ -80,4 +76,5 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+*/
 }

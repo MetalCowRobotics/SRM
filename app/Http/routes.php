@@ -31,8 +31,6 @@ Route::resource('organizations.sponsors.correspondents', 'SponsorCorrespondentCo
 
 Route::resource('organizations.sponsors.presentations', 'SponsorPresentationController');
 
-Route::auth();
-
 Route::get('login/slack', 'Auth\AuthController@handleProviderCallback');
 
 Route::get('login/slack-redir', 'Auth\AuthController@redirectToProvider');
