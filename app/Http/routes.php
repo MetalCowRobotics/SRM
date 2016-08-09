@@ -1,5 +1,6 @@
 <?php
-
+use Log;
+use Auth;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -13,6 +14,9 @@
 
 Route::get('/', function () {
   return view('welcome');
+  if (Auth::check()) {
+    Log::info('it works ya know');
+  }   
 });
 
 Route::resource('organizations', 'OrganizationController', ['except' => [
@@ -36,3 +40,4 @@ Route::get('login/slack', 'Auth\AuthController@handleProviderCallback');
 Route::get('login/slack-redir', 'Auth\AuthController@redirectToProvider');
 
 Route::get('/home', 'HomeController@index');
+
