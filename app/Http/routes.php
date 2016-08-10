@@ -1,6 +1,4 @@
 <?php
-use Log;
-use Auth;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -14,9 +12,6 @@ use Auth;
 
 Route::get('/', function () {
   return view('welcome');
-  if (Auth::check()) {
-    Log::info('it works ya know');
-  }   
 });
 
 Route::resource('organizations', 'OrganizationController', ['except' => [
